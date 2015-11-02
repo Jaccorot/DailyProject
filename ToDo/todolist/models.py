@@ -9,12 +9,12 @@ class BusinessList(models.Model):
     title = models.CharField('标题', max_length=100)
     content = models.CharField('内容', max_length=1000)
     comments = models.CharField('评论', max_length=1000, null=True)
-    plan_start_time = models.DateTimeField('计划开始时间', default=timezone.now())
+    plan_start_time = models.DateTimeField('计划开始时间', default=timezone.now)
     plan_end_time = models.DateTimeField('计划完成时间', null=True)
     plan_duration = models.DateTimeField('计划时长', null=True)
     create_time = models.DateTimeField('创建时间', auto_now=True)
     finish_time = models.DateTimeField('完成时间', null=True)
-    latest_update_time = models.DateTimeField('状态更新时间', default=timezone.now())
+    latest_update_time = models.DateTimeField('状态更新时间', default=timezone.now)
 
     def __unicode__(self):
         return self.name + ":" + self.title
