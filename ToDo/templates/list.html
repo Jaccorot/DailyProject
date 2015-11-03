@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+</head>
+<body>
+    <form method="post" action="/">
+        <input type="text" id="id_new_item" name="item_text" placeholder="Enter a to-do item"/>
+        {% csrf_token %}
+    </form>
+    <table id="id_list_table">
+        {% for item in items %}
+        <tr><td>{{ forloop.counter }}:{{ item.text }}</td></tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
