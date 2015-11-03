@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import unittest
 
+
 class NewVisitorTest(unittest.TestCase):
 
     def setUp(self):
