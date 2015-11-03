@@ -24,5 +24,9 @@ class BusinessList(models.Model):
     def finish_status(self):
         return 1 if self.finish_time else 0
 
+class List(models.Model):
+    pass
+
 class Item(models.Model):
     text = models.TextField(default='')
+    list = models.ForeignKey(List, default=None)
