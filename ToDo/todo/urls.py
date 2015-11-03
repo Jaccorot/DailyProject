@@ -19,7 +19,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'todolist.views.home_page', name="home_page"),
-    url(r'^lists/(\d+)/$', 'todolist.views.view_list', name='view_list'),
-    url(r'^lists/(\d+)/add_item$', 'todolist.views.add_item', name='add_item'),
-    url(r'^lists/new$', 'todolist.views.new_list', name='new_list'),
+    url(r'^lists/', include('todolist.urls')),
 ]
