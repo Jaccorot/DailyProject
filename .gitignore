@@ -11,3 +11,6 @@ local_settings.py
 ### PyCharm ###
 .idea/
 *.xml
+
+###virtualenv###
+virtualenv/
