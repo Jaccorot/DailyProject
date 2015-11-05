@@ -2,6 +2,7 @@
 
 from django.db import models
 import django.utils.timezone as timezone
+from django.core.urlresolvers import reverse
 
 class BusinessList(models.Model):
     name = models.CharField('名称', max_length=50)
@@ -25,7 +26,8 @@ class BusinessList(models.Model):
         return 1 if self.finish_time else 0
 
 class List(models.Model):
-    pass
+    def get_absolute_url(self):
+        return reverse('view_list', args=[self.id])
 
 class Item(models.Model):
     text = models.TextField(default='')
