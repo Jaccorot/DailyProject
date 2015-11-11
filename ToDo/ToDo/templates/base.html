@@ -8,31 +8,73 @@
     <link rel="stylesheet" href="/static/css/base.css" media="screen"/>
 </head>
 <body>
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="text-center">
-                <h1>{% block header_text %}{% endblock %}</h1>
-                <form method="post" action="{% block form_action %}{% endblock %}">
-                    {{ form.text }}
-                    {% csrf_token %}
-                    {% if form.errors %}
-                        <div class="form-group has-error">
-                            <span class="help-block">{{ form.text.errors }}</span>
-                        </div>
-                    {% endif %}
-                </form>
+    <div class="container">
+        <div class="navbar">
+            {% if user.email %}
+                <p>Logged in as {{ user.email }}</p>
+                <p><a href="{% url 'logout' %}" id="logout">Sign out</a></p>
+            {% else %}
+            <a href="#" id="login">Sign in</a>
+            {% endif %}
+            <p>User: {{ user }}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="text-center">
+                    <h1>{% block header_text %}{% endblock %}</h1>
+                    <form method="post" action="{% block form_action %}{% endblock %}">
+                        {{ form.text }}
+                        {% csrf_token %}
+                        {% if form.errors %}
+                            <div class="form-group has-error">
+                                <span class="help-block">{{ form.text.errors }}</span>
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                {% block table %}
+                {% endblock %}
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            {% block table %}
-            {% endblock %}
-        </div>
-    </div>
-
     <script src="/static/js/jquery.min.js"></script>
 {#    <script src="/static/tests/qunit.js"></script>#}
     <script src="/static/js/todolist.js"></script>
+    <script src="https://login.persona.org/include.js"></script>
+    <script>
+        $(document).ready(function(){
+            var loginLink = document.getElementById('login');
+            if (loginLink){
+                loginLink.onclick = function () {navigator.id.request();};
+            }
+
+            var logoutLink = document.getElementById('logout');
+            if (logoutLink){
+                logoutLink.onclick = function(){ navigator.id.logout();};
+            }
+
+            var currtenUser = '{{ user.email }}'||null;
+            var csrf_token = '{{ csrf_token }}';
+            console.log(currtenUser);
+
+            navigator.id.watch({
+                loggedInUser: currentUser,
+                onlogin: function(assertion){
+                    $.post('/accounts/login', { assertion: assertion, csrfmiddlewaretoken:csrf_token})
+                            .done(function(){ window.location.reload();})
+                            .fail(function(){ navigator.id.logout();});
+                },
+                onlogout: function(){
+                    $.post('/accounts/logout')
+                            .always(function(){ window.location.reload();});
+                }
+            });
+
+        });
+    </script>
 </body>
 </html>
